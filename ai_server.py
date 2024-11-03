@@ -6,12 +6,11 @@
 # Customer AI server for AgentDVR or similar that uses the same API as ProjectCode
 # This server is a simple Flask server that listens for POST requests with an image file attached
 # The server will then run the image through the Geti model and return the results as a JSON object
-
+# https://intel.ly/4hjJGpw
 
 # ========================================================================================================
 #   Don't consider this server as a production-ready server, it's just for my personal use and testing
 # ========================================================================================================
-
 
 import datetime
 import uuid
