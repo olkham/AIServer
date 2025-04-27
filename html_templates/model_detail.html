@@ -1,0 +1,64 @@
+detail.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ model.name }} - Model Details</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Model Details: {{ model.name }}</h1>
+            <a href="/gui/models" class="btn btn-secondary">Back to Models</a>
+            {% if is_loaded %}
+            <a href="/gui/inference/{{ model.id }}" class="btn btn-success">Run Inference</a>
+            {% else %}
+            <form method="POST" action="/gui/models/{{ model.id }}/load" style="display:inline;">
+                <button type="submit" class="btn">Load Model</button>
+            </form>
+            {% endif %}
+        </header>
+        
+        <div class="card">
+            <h2>Basic Information</h2>
+            <div class="property">
+                <span class="property-name">Status:</span>
+                {% if is_loaded %}
+                <span class="badge badge-success">Loaded</span>
+                {% else %}
+                <span class="badge badge-warning">Not Loaded</span>
+                {% endif %}
+            </div>
+            <div class="property">
+                <span class="property-name">Name:</span>
+                <span>{{ model.name }}</span>
+            </div>
+            <div class="property">
+                <span class="property-name">Plugin:</span>
+                <span>{{ model.plugin_name }}</span>
+            </div>
+            <div class="property">
+                <span class="property-name">File Path:</span>
+                <span>{{ model.path }}</span>
+            </div>
+            <div class="property">
+                <span class="property-name">Upload Date:</span>
+                <span>{{ model.uploaded_at }}</span>
+            </div>
+            <div class="property">
+                <span class="property-name">Model ID:</span>
+                <span>{{ model.id }}</span>
+            </div>
+        </div>
+        
+        {% if is_loaded and metadata %}
+        <div class="card">
+            <h2>Model Metadata</h2>
+            <pre>{{ metadata|tojson(indent=2) }}</pre>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

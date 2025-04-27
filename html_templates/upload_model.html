@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Model - AI Inference Server</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Upload Model</h1>
+            <p>Use this form to upload a new model to the server.</p>
+            <a href="/" class="btn btn-secondary">Back to Dashboard</a>
+        </header>
+        
+        <div class="card">
+            <form method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="model_name">Model Name:</label>
+                    <input type="text" id="model_name" name="model_name" placeholder="Enter a descriptive name for the model">
+                </div>
+                
+                <div class="form-group">
+                    <label for="plugin_name">Select Plugin:</label>
+                    <select id="plugin_name" name="plugin_name" required>
+                        <option value="">-- Select Plugin --</option>
+                        {% for plugin in plugins %}
+                        <option value="{{ plugin }}">{{ plugin }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="model_file">Model File:</label>
+                    <input type="file" id="model_file" name="model_file" required>
+                    <small>Upload the model file (supported formats depend on the selected plugin)</small>
+                </div>
+                
+                <div class="form-group">
+                    <button type="submit" class="btn">Upload Model</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

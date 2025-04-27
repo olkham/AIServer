@@ -1,0 +1,20 @@
+{
+    "success": true,
+    "models": [
+        "ipcam-dark",
+        "ipcam-general",
+        "license-plate",
+        "ipcam-combined",
+        "actionnetv2",
+        "ipcam-animal"
+    ],
+    "moduleId": "ObjectDetectionYOLOv5-6.2",
+    "moduleName": "Object Detection (YOLOv5 6.2)",
+    "code": 200,
+    "command": "list-custom",
+    "requestId": "5c044ba2-a1d9-49aa-ac90-14fbd75e5916",
+    "inferenceDevice": "CPU",
+    "analysisRoundTripMs": 3,
+    "processedBy": "localhost",
+    "timestampUTC": "Tue, 22 Oct 2024 19:42:58 GMT"
+}

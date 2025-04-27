@@ -1,0 +1,72 @@
+Server\html_templates\inference.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Run Inference - {{ model.name }}</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Run Inference: {{ model.name }}</h1>
+            <a href="/gui/models/{{ model.id }}" class="btn btn-secondary">Back to Model Details</a>
+        </header>
+        
+        {% if not image_path %}
+        <div class="card">
+            <h2>Upload Image</h2>
+            <form method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="image">Select an image:</label>
+                    <input type="file" id="image" name="image" accept=".jpg,.jpeg,.png" required>
+                </div>
+                <button type="submit" class="btn">Run Inference</button>
+            </form>
+        </div>
+        {% else %}
+        <div class="card">
+            <h2>Inference Results</h2>
+            <div class="results-container">
+                <div class="image-container">
+                    <h3>Input Image</h3>
+                    <img src="{{ image_path }}" alt="Input image">
+                </div>
+                <div class="results-data">
+                    <h3>Detection Results</h3>
+                    {% if results and results.detections %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Label</th>
+                                <th>Confidence</th>
+                                <th>Bounding Box</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for det in results.detections %}
+                            <tr>
+                                <td>{{ det.label }}</td>
+                                <td>{{ "%.2f"|format(det.confidence * 100) }}%</td>
+                                <td>
+                                    x: {{ det.x_min }}-{{ det.x_max }}, 
+                                    y: {{ det.y_min }}-{{ det.y_max }}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% elif results %}
+                    <pre>{{ results|tojson(indent=2) }}</pre>
+                    {% else %}
+                    <p>No objects detected in the image.</p>
+                    {% endif %}
+                    <a href="/gui/inference/{{ model.id }}" class="btn">Try Another Image</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

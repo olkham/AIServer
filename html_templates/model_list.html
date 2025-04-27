@@ -1,0 +1,49 @@
+templates\model_list.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model List - AI Inference Server</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Model List</h1>
+            <p>List of all uploaded models.</p>
+            <a href="/" class="btn btn-secondary">Back to Dashboard</a>
+            <a href="/gui/upload_model" class="btn">Upload New Model</a>
+        </header>
+        
+        <div class="card">
+            {% if models and models|length > 0 %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Plugin</th>
+                        <th>Uploaded</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for model in models %}
+                    <tr>
+                        <td>{{ model.name }}</td>
+                        <td>{{ model.plugin_name }}</td>
+                        <td>{{ model.uploaded_at }}</td>
+                        <td>
+                            <a href="/gui/models/{{ model.id }}" class="btn">Details</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p>No models have been uploaded yet. <a href="/gui/upload_model">Upload your first model</a>.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

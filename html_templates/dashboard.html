@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Inference Server Dashboard</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>AI Inference Server Dashboard</h1>
+        
+        <h2>Available Plugins</h2>
+        <div>
+            <select id="plugin-select">
+                <option value="">Select a plugin</option>
+                {% for plugin in plugins %}
+                <option value="{{ plugin }}">{{ plugin }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div>
+            <h3>Load Model</h3>
+            <div>
+                <label for="model-path">Model Path:</label>
+                <input type="text" id="model-path" placeholder="/path/to/model">
+            </div>
+            <div>
+                <label for="model-id">Model ID (optional):</label>
+                <input type="text" id="model-id" placeholder="Leave blank for auto-generated ID">
+            </div>
+            <button id="load-model-btn" class="btn">Load Model</button>
+        </div>
+        
+        <div id="status" style="display: none;"></div>
+    </div>
+    
+    <script>
+        document.getElementById('load-model-btn').addEventListener('click', function() {
+            const plugin = document.getElementById('plugin-select').value;
+            const modelPath = document.getElementById('model-path').value;
+            const modelId = document.getElementById('model-id').value;
+            
+            if (!plugin) {
+                showStatus('Please select a plugin', 'error');
+                return;
+            }
+            
+            if (!modelPath) {
+                showStatus('Please enter a model path', 'error');
+                return;
+            }
+            
+            const payload = {
+                plugin_name: plugin,
+                model_path: modelPath
+            };
+            
+            if (modelId) {
+                payload.model_id = modelId;
+            }
+            
+            fetch('/api/models/load', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    showStatus('Error: ' + data.error, 'error');
+                } else {
+                    showStatus('Model loaded successfully! Model ID: ' + data.model_id, 'success');
+                }
+            })
+            .catch(error => {
+                showStatus('Error: ' + error.message, 'error');
+            });
+        });
+        
+        function showStatus(message, type) {
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = message;
+            statusEl.className = type;
+            statusEl.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
